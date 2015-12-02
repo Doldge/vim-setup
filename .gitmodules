@@ -1,0 +1,55 @@
+[submodule "indentpython"]
+    path = bundle/indentpython.vim
+    url = https://github.com/vim-scripts/indentpython.vim.git
+
+[submodule "nerdtree"]
+    path = bundle/nerdtree
+    url = https://github.com/scrooloose/nerdtree.git
+
+[submodule "powerline"]
+    path = bundle/powerline
+    url = https://github.com/Lokaltog/powerline.git
+
+[submodule "SimpylFold"]
+    path = bundle/SimpylFold
+    url = https://github.com/tmhedberg/SimpylFold.git
+
+[submodule "snipmate.vim"]
+    path = bundle/snipmate.vim
+    url = https://github.com/csexton/snipmate.vim.git
+
+[submodule "syntastic"]
+    path = bundle/syntastic
+    url = https://github.com/scrooloose/syntastic.git
+
+[submodule "tern_for_vim"]
+    path = bundle/tern_for_vim
+    url = https://github.com/marijnh/tern_for_vim.git
+
+[submodule "vim-flake8"]
+    path = bundle/vim-flake8
+    url = https://github.com/nvie/vim-flake8.git
+
+[submodule "vim-fugitive"]
+    path = bundle/vim-fugitive
+    url = https://github.com/tpope/vim-fugitive.git
+
+[submodule "vim-jinja"]
+    path = bundle/vim-jinja
+    url = https://github.com/lepture/vim-jinja.git
+
+[submodule "vim-nerdtree-tabs"]
+    path = bundle/vim-nerdtree-tabs
+    url = https://github.com/jistr/vim-nerdtree-tabs.git
+
+[submodule "Vundle.vim"]
+    path = bundle/Vundle.vim
+    url = https://github.com/gmarik/Vundle.vim.git
+
+[submodule "YouCompleteMe"]
+    path = bundle/YouCompleteMe
+    url = https://github.com/Valloric/YouCompleteMe.git
+
+[submodule "Zenburn"]
+    path = bundle/Zenburn
+    url = https://github.com/jnurmine/Zenburn.git
