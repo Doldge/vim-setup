@@ -3,6 +3,7 @@ set shiftwidth=4
 set expandtab
 filetype off
 syntax on
+set enc=utf-8
 
 colorscheme delek
 highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#0000ff
