@@ -45,6 +45,7 @@ Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'jnurmine/Zenburn'
+Plugin 'ledger/vim-ledger'
 call vundle#end()
 
 let g:ycm_path_to_python_interpreter = '/usr/bin/python'
@@ -76,6 +77,9 @@ au BufNewFile,BufRead *.js,*.html,*.css
     \ set expandtab
 
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+au BufNewFile,BufRead *.ldg,*.ledger setf ledger | comp ledger
+
 
 "python with virtualenv support
 py << EOF
