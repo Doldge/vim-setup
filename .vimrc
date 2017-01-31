@@ -5,6 +5,7 @@ set shiftwidth=4
 " set expandtab
 filetype off
 syntax on
+set enc=utf-8
 
 " show control characters tabs/trailing spaces/EOL
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
@@ -52,6 +53,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'jnurmine/Zenburn'
 Plugin 'elixir-lang/vim-elixir'
+Plugin 'ledger/vim-ledger'
 call vundle#end()
 
 let g:ycm_path_to_python_interpreter = '/usr/bin/python'
@@ -83,6 +85,9 @@ au BufNewFile,BufRead *.js,*.html,*.css
     \ set expandtab
 
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+au BufNewFile,BufRead *.ldg,*.ledger setf ledger | comp ledger
+
 
 "python with virtualenv support
 py << EOF
