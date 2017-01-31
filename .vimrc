@@ -1,14 +1,21 @@
 set tabstop=4
 set shiftwidth=4
-set expandtab
+" FIXME GymMaster Code uses tabs instead of spaces
+" SMTP2Go code uses spaces instead of tabs.
+" set expandtab
 filetype off
 syntax on
+
+" show control characters tabs/trailing spaces/EOL
+set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
+set list
 
 colorscheme delek
 highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#0000ff
 highlight BadWhitespace ctermbg=red guibg=darkred
 
 let python_highlight_all=1
+let c_highlight_all=1
 set nocompatible " be ViMproved
 set whichwrap=b,s,<,>,[,]
 set ruler
@@ -44,6 +51,7 @@ Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'jnurmine/Zenburn'
+Plugin 'elixir-lang/vim-elixir'
 call vundle#end()
 
 let g:ycm_path_to_python_interpreter = '/usr/bin/python'
