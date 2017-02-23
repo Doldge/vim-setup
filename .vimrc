@@ -3,6 +3,7 @@ set shiftwidth=4
 " FIXME GymMaster Code uses tabs instead of spaces
 " SMTP2Go code uses spaces instead of tabs.
 " set expandtab
+set noexpandtab
 filetype off
 syntax on
 set enc=utf-8
@@ -27,6 +28,8 @@ set foldmethod=indent
 set foldlevel=99
 
 " switch between splits with ctrl + <>
+" ctrl + J = down
+" ctrl + K = up ?
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
@@ -45,7 +48,7 @@ Plugin 'marijnh/tern_for_vim'
 Plugin 'csexton/snipmate.vim'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'vim-scripts/indentpython.vim'
-Plugin 'scrooloose/syntastic'
+Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
@@ -56,6 +59,20 @@ Plugin 'elixir-lang/vim-elixir'
 Plugin 'ledger/vim-ledger'
 call vundle#end()
 
+" Syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_yaml_checkers = ['yamllint']
+
+
+" YCM settings
 let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 let g:ycm_server_keep_logfiles = 1
 let g:ycm_server_log_level = 'debug'
