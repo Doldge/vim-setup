@@ -20,7 +20,7 @@
 
 [submodule "syntastic"]
     path = bundle/syntastic
-    url = https://github.com/scrooloose/syntastic.git
+    url = https://github.com/vim-syntastic/syntastic.git
 
 [submodule "tern_for_vim"]
     path = bundle/tern_for_vim
@@ -53,3 +53,12 @@
 [submodule "Zenburn"]
     path = bundle/Zenburn
     url = https://github.com/jnurmine/Zenburn.git
+
+[submodule "vim-elixer"]
+    path = bundle/vim-elixer
+    url = https://github.com/elixir-lang/vim-elixir.git
+
+[submodule "vim-ledger"]
+    path = bundle/vim-ledger
+    url = https://github.com/ledger/vim-ledger.git
+
