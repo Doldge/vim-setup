@@ -7,6 +7,8 @@ set noexpandtab
 filetype off
 syntax on
 set enc=utf-8
+" Spell Checker, disabled by default.
+" set spell spelllang=en_nz
 
 " show control characters tabs/trailing spaces/EOL
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
