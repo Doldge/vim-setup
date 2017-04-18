@@ -107,6 +107,7 @@ au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
 au BufNewFile,BufRead *.ldg,*.ledger setf ledger | comp ledger
 
+au Filetype ruby setlocal shiftwidth=2 tabstop=2 expandtab
 
 "python with virtualenv support
 py << EOF
