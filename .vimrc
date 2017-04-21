@@ -14,6 +14,18 @@ set enc=utf-8
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 set list
 
+" Hanselman suggestion
+" https://raw.githubusercontent.com/morhetz/gruvbox/master/colors/gruvbox.vims
+" set number " shows line numbers left of the line.
+set background=dark
+" colorscheme gruvbox
+if &term =~ '256color'
+	" disable background color eraser (BCE) so that color schemes
+	" render properly inside 256-color tmux and GNU Screen.
+	set t_ut=
+endif
+
+" Old scheme. still kinda prefer it TBH
 colorscheme delek
 highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#0000ff
 highlight BadWhitespace ctermbg=red guibg=darkred
