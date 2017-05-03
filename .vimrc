@@ -84,6 +84,9 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_yaml_checkers = ['yamllint']
+" Python linter options
+let g:syntastic_python_checkers = ['python', 'flake8']
+let g:syntastic_python_flake8_args = "--benchmark --max-line-length=90 --builtins=basestring --doctests"
 
 
 " YCM settings
