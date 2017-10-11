@@ -11,21 +11,18 @@ set enc=utf-8
 " set spell spelllang=en_nz
 
 " show control characters tabs/trailing spaces/EOL
+" :set nolist to turn it off
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 set list
 
-" Hanselman suggestion
-" https://raw.githubusercontent.com/morhetz/gruvbox/master/colors/gruvbox.vims
-" set number " shows line numbers left of the line.
+" Colour Rules.
+" I also like to use ubuntu mono as my terminal font.
 set background=dark
-" colorscheme gruvbox
 if &term =~ '256color'
 	" disable background color eraser (BCE) so that color schemes
 	" render properly inside 256-color tmux and GNU Screen.
 	set t_ut=
 endif
-
-" Old scheme. still kinda prefer it TBH
 colorscheme delek
 highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#0000ff
 highlight BadWhitespace ctermbg=red guibg=darkred
@@ -74,6 +71,8 @@ Plugin 'ledger/vim-ledger'
 call vundle#end()
 
 " Syntastic settings
+" use :SyntasticToggleMode
+" to turn off
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -84,6 +83,9 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_yaml_checkers = ['yamllint']
+" other options include pylint and pyflakes
+let g:syntastic_python_checkers = ['flake8', 'python']
+let g:syntastic_python_flake8_args = '--builtins=execfile,raw_input,basestring'
 
 
 " YCM settings
@@ -99,7 +101,7 @@ let g:SimpylFold_docstring_preview=1
 let NERDTreeIgnore=['\.pyc$', '\~$']
 
 set omnifunc=csscomplete#CompleteCSS
-
+" .py rules. FIXME does this need to match ..pyw/etc as well?
 au BufNewFile,BufRead *.py
     \ set tabstop=4 |
     \ set softtabstop=4 |
@@ -108,18 +110,25 @@ au BufNewFile,BufRead *.py
     \ set expandtab |
     \ set autoindent |
     \ set fileformat=unix |
-
+" html/css/js
 au BufNewFile,BufRead *.js,*.html,*.css
     \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
     \ set expandtab
-
+" white space rules
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-
+" Ledger Formatting
 au BufNewFile,BufRead *.ldg,*.ledger setf ledger | comp ledger
-
+" Ruby formatting
 au Filetype ruby setlocal shiftwidth=2 tabstop=2 expandtab
+" git Commit 
+autocmd Filetype gitcommit setlocal spell textwidth=72
+
+" Tab Rules:
+nnoremap <C-Left> :tabprevious<CR>
+nnoremap <C-Right> :tabnext<CR>
+
 
 "python with virtualenv support
 py << EOF
