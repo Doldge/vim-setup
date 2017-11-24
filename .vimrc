@@ -1,14 +1,14 @@
 set tabstop=4
 set shiftwidth=4
-" FIXME GymMaster Code uses tabs instead of spaces
-" SMTP2Go code uses spaces instead of tabs.
-" set expandtab
 set noexpandtab
 filetype off
 syntax on
 set enc=utf-8
 " Spell Checker, disabled by default.
-" set spell spelllang=en_nz
+set spelllang=en_nz
+set nospell
+" clipboard
+set clipboard=unnamed
 
 " show control characters tabs/trailing spaces/EOL
 " :set nolist to turn it off
@@ -85,11 +85,12 @@ let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_yaml_checkers = ['yamllint']
 " other options include pylint and pyflakes
 let g:syntastic_python_checkers = ['flake8', 'python']
+" seems to use python3 builtins by default. add py2 builtins as well.
 let g:syntastic_python_flake8_args = '--builtins=execfile,raw_input,basestring'
 
 
 " YCM settings
-let g:ycm_path_to_python_interpreter = '/usr/bin/python'
+let g:ycm_path_to_python_interpreter = 'python2'
 let g:ycm_server_keep_logfiles = 1
 let g:ycm_server_log_level = 'debug'
 let g:ycm_autoclose_preview_window_after_completion=1
@@ -125,12 +126,23 @@ au Filetype ruby setlocal shiftwidth=2 tabstop=2 expandtab
 " git Commit 
 autocmd Filetype gitcommit setlocal spell textwidth=72
 
-" Tab Rules:
-nnoremap <C-Left> :tabprevious<CR>
-nnoremap <C-Right> :tabnext<CR>
+" Tab Rules
+" shift+pgUp/pgDown to change tabs.
+nnoremap <S-PageUp> :tabprevious<CR>
+nnoremap <S-PageDown> :tabnext<CR>
+
+" special code for mrimpossible using tabs in python files
+function! SetupEnvironment()
+	let l:path = expand('%:p')
+	if l:path =~ '/home/callum/work/mrimpossible'
+		setlocal ts=4 sw=4 sts=4 textwidth=79 fileformat=unix autoindent noet
+		let g:syntastic_mode_map = { 'mode': 'passive' }
+	endif
+endfunction
+autocmd! BufReadPost,BufNewFile *.py call SetupEnvironment()
 
 
-"python with virtualenv support
+" python with virtualenv support
 py << EOF
 import os
 import sys
