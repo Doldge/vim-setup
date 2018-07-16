@@ -23,7 +23,7 @@ if &term =~ '256color'
 	" render properly inside 256-color tmux and GNU Screen.
 	set t_ut=
 endif
-colorscheme delek
+colorscheme offdelek
 highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#0000ff
 highlight BadWhitespace ctermbg=red guibg=darkred
 
@@ -68,6 +68,7 @@ Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'jnurmine/Zenburn'
 Plugin 'elixir-lang/vim-elixir'
 Plugin 'ledger/vim-ledger'
+Plugin 'mbbill/undotree'
 call vundle#end()
 
 " Syntastic settings
@@ -90,7 +91,8 @@ let g:syntastic_python_flake8_args = '--benchmark --max-line-length=90 --builtin
 
 
 " YCM settings
-let g:ycm_path_to_python_interpreter = 'python2'
+let g:ycm_python_binry_path = '/usr/bin/python3'
+let g:ycm_path_to_python_interpreter = '/usr/bin/python3'
 let g:ycm_server_keep_logfiles = 1
 let g:ycm_server_log_level = 'debug'
 let g:ycm_autoclose_preview_window_after_completion=1
@@ -123,7 +125,7 @@ au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 au BufNewFile,BufRead *.ldg,*.ledger setf ledger | comp ledger
 " Ruby formatting
 au Filetype ruby setlocal shiftwidth=2 tabstop=2 expandtab
-" git Commit 
+" git Commit
 autocmd Filetype gitcommit setlocal spell textwidth=72
 
 " Tab Rules
@@ -131,24 +133,37 @@ autocmd Filetype gitcommit setlocal spell textwidth=72
 nnoremap <S-PageUp> :tabprevious<CR>
 nnoremap <S-PageDown> :tabnext<CR>
 
+" Undo Tree commands
+nnoremap <F5> :UndotreeToggle<cr>
+if has("persistent_undo")
+    set undodir=~/.undodir/
+    set undofile
+endif
+
 " special code for mrimpossible using tabs in python files
 function! SetupEnvironment()
 	let l:path = expand('%:p')
 	if l:path =~ '/home/callum/work/mrimpossible'
 		setlocal ts=4 sw=4 sts=4 textwidth=79 fileformat=unix autoindent noet
-		let g:syntastic_mode_map = { 'mode': 'passive' }
+		let g:syntastic_python_flake8_args = '--benchmark --max-line-length=90 --builtins=execfile,raw_input,basestring --ignore=W191'
+		let g:ycm_python_binry_path = '/usr/bin/python3'
+		let g:ycm_path_to_python_interpreter = 'python3'
+		" let g:syntastic_mode_map = { 'mode': 'passive' }
 	endif
 endfunction
 autocmd! BufReadPost,BufNewFile *.py call SetupEnvironment()
 
 
 " python with virtualenv support
-py << EOF
+py3 << EOF
 import os
 import sys
 if 'VIRTUAL_ENV' in os.environ:
   project_base_dir = os.environ['VIRTUAL_ENV']
   activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-  execfile(activate_this, dict(__file__=activate_this))
+  if sys.version_info.major != 3:
+    execfile(activate_this, dict(__file__=activate_this))
+  else:
+    exec(open(activate_this).read(), dict(__file__=activate_this))
 EOF
 
