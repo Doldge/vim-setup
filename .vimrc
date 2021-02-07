@@ -1,6 +1,5 @@
-set tabstop=4
-set shiftwidth=4
-set noexpandtab
+set ts=4 sw=4 sts=4 fileformat=unix autoindent et
+setlocal ts=4 sw=4 sts=4 fileformat=unix autoindent et
 filetype off
 syntax on
 set enc=utf-8
@@ -55,7 +54,7 @@ call vundle#begin()
  Bundle "lepture/vim-jinja"
  Plugin 'gmarik/Vundle.vim'
  Plugin 'Valloric/YouCompleteMe'
- Plugin 'marijnh/tern_for_vim'
+" Plugin 'marijnh/tern_for_vim'
  Plugin 'csexton/snipmate.vim'
  Plugin 'tmhedberg/SimpylFold'
  Plugin 'vim-scripts/indentpython.vim'
@@ -69,16 +68,31 @@ call vundle#begin()
  Plugin 'elixir-lang/vim-elixir'
  Plugin 'ledger/vim-ledger'
  Plugin 'mbbill/undotree'
-" dart syntax highlighting
+ " dart syntax highlighting
  Plugin 'dart-lang/dart-vim-plugin'
-" Valloric, HTML Tag matching
+ " Valloric, HTML Tag matching
  Plugin 'valloric/MatchTagAlways'
-" SEARCH!
+ " SEARCH!
  Plugin 'junegunn/fzf'
  Plugin 'junegunn/fzf.vim'
-" RST highlighting
-Plugin 'Rykka/riv.vim'
+ " RST highlighting
+ Plugin 'Rykka/riv.vim'
 
+ " Auto Create Doc Strings in Python.
+ " ctrl + i
+ Plugin 'heavenshell/vim-pydocstring'
+
+ " DB Ext
+ Plugin 'vim-scripts/dbext.vim'
+ " TypeScript highlighting?
+ Plugin 'leafgarland/typescript-vim'
+ Plugin 'peitalin/vim-jsx-typescript'
+ Plugin 'maxmellon/vim-jsx-pretty'
+ " Toml highlighting
+ Plugin 'cespare/vim-toml'
+ Plugin 'vmchale/tomlcheck-vim'
+ " Fluent Highlighting
+ Plugin 'projectfluent/fluent.vim'
 call vundle#end()
 filetype plugin indent on
 
@@ -120,37 +134,57 @@ set statusline+=%*
 
 " let g:syntastic_debug = 3
 let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_aggregate_errors = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-" let g:syntastic_javascript_checkers = ['jshint']
+" JS Linter
 let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_typescript_checkers = ['eslint']
+" YAML Linter
 let g:syntastic_yaml_checkers = ['yamllint']
 " other options include pylint and pyflakes
-let g:syntastic_python_checkers = ['flake8', 'mypy', 'python']
-" let g:syntastic_python_checkers = ['flake8', 'python']
+" let g:syntastic_python_checkers = ['flake8', 'mypy', 'python']
+let g:syntastic_python_checkers = ['flake8', 'python']
+" let g:syntastic_python_checkers = ['mypy', 'flake8', 'python']
 " seems to use python3 builtins by default. add py2 builtins as well.
-let g:syntastic_python_flake8_args = '--benchmark --max-line-length=90 --builtins=execfile,raw_input,basestring --ignore=W191'
-let g:syntastic_python_mypy_args = '--ignore-missing-imports --no-strict-optional'
+let g:syntastic_python_flake8_args = '--benchmark --max-line-length=90 --ignore=W191,W503'
+" ShellCheck should follow `source` calls in the script.
+let g:syntastic_sh_shellcheck_args = '-x'
+let g:syntastic_python_mypy_args = '--ignore-missing-imports --no-strict-optional --cache-dir /home/callum/work/.mypy_mrimpossible/'
 " Custom Checker for PLPGSQL
-let g:syntastic_sql_checkers = ['pgsanity']
+let g:syntastic_sql_checkers = ['sqlfluff', 'pgsanity']
+
+" Syntastic Key Bindings
+map <leader>q :lnext<CR>
 
 " YCM settings
 let g:ycm_python_binry_path = '/usr/bin/python3'
 let g:ycm_path_to_python_interpreter = '/usr/bin/python3'
-let g:ycm_server_keep_logfiles = 1
+" let g:ycm_server_keep_logfiles = 1
 let g:ycm_server_log_level = 'debug'
+let g:ycm_log_level='debug'
 let g:ycm_autoclose_preview_window_after_completion=1
-" map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" YCM Key Bindings
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+map <leader>gt :tab split<CR>:exec("YcmCompleter GoToDefinitionElseDeclaration")<CR>
+map <leader>h  :YcmCompleter GetDoc<CR>
+map <leader>f  :YcmCompleter FixIt<CR>
+" re-compile.
+nnoremap <F6> :YcmDiags<CR>
 
-"let g:dbext_default_profile_PG = 'type=PGSQL:user=postgres'
+
+let g:dbext_default_profile_PG = 'type=PGSQL:user=callum:host=localhost:dbname=g_windriverfitness:port=5432'
+autocmd VimEnter * DBCompleteTables
+
+
 let g:SimpylFold_docstring_preview=1
 
 let NERDTreeIgnore=['\.pyc$', '\~$']
 
+
 " set omnifunc=csscomplete#CompleteCSS
-" .py rules. FIXME does this need to match ..pyw/etc as well?
-au BufNewFile,BufRead *.py
+au BufNewFile,BufRead *.py,*.pyw
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
@@ -158,14 +192,17 @@ au BufNewFile,BufRead *.py
     \ set expandtab |
     \ set autoindent |
     \ set fileformat=unix
+
 " html/css/js
 au BufNewFile,BufRead *.js,*.html,*.css
     \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
     \ set expandtab
+
+
 " white space rules
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h,*.ftl match BadWhitespace /\s\+$/
 " Ledger Formatting
 au BufNewFile,BufRead *.ldg,*.ledger setf ledger | comp ledger
 " Ruby formatting
@@ -173,10 +210,12 @@ au Filetype ruby setlocal shiftwidth=2 tabstop=2 expandtab
 " git Commit
 autocmd Filetype gitcommit setlocal spell textwidth=72
 
+
 " Tab Rules
 " shift+pgUp/pgDown to change tabs.
 nnoremap <S-PageUp> :tabprevious<CR>
 nnoremap <S-PageDown> :tabnext<CR>
+
 
 " Undo Tree commands
 nnoremap <F5> :UndotreeToggle<cr>
@@ -184,23 +223,6 @@ if has("persistent_undo")
     set undodir=~/.undodir/
     set undofile
 endif
-
-" special code for mrimpossible using tabs in python files
-function! SetupEnvironment()
-	let l:path = expand('%:p')
-	if l:path =~ '/home/callum/work/mrimpossible'
-		setlocal ts=4 sw=4 sts=4 fileformat=unix autoindent noet
-		au BufRead,BufNewFile *.py,*.pyw setlocal textwidth=79
-		au BufRead,BufNewFile *.py,*.pyw set textwidth=79
-		let g:syntastic_python_flake8_args = '--benchmark --max-line-length=90 --builtins=execfile,raw_input,basestring --ignore=W191,E117,W503'
-		let g:ycm_python_binry_path = '/usr/bin/python3'
-		let g:syntastic_python_python_exec = '/usr/bin/python3'
-		let g:ycm_path_to_python_interpreter = 'python3'
-		" let g:syntastic_mode_map = { 'mode': 'passive' }
-	endif
-endfunction
-autocmd! BufReadPost,BufNewFile *.py,*.js,*.html call SetupEnvironment()
- au BufRead,BufNewFile *.py set textwidth=79
 
 
 " python with virtualenv support
@@ -216,44 +238,53 @@ if 'VIRTUAL_ENV' in os.environ:
     exec(open(activate_this).read(), dict(__file__=activate_this))
 EOF
 
-" Special Reason Handling.
-function SetupReason()
-	" Reason Language Server.
-	set omnifunc=LanguageClient#complete
-	set completefunc=LanguageClient#complete
-	let g:LanguageClient_autoStart = 1
-	let g:LanguageClient_serverCommands = {
-		\ 'reason': ['/home/callum/work/reason-language-server/reason-language-server.exe'],
-	\}
-	let g:LanguageClient_loggingLevel = 'INFO'
-	let g:LanguageClient_loggingFile =  expand('/tmp/LanguageClient.log')
-	let g:LanguageClient_serverStderr = expand('/tmp/LanguageServer.log')
-	let g:deoplete#enable_at_startup = 1
-
-	" Using Ale now instead of Syntastic.. FIXME: ALE is ugly, use Syntastic
-	" instead.
-	let g:ale_linters_explicit = 1
-
-	let g:ale_enabled = 1
-	let g:ale_open_list = 1
-	let g:ale_completion_enabled = 1
-	let g:ale_python_flake8_options = '--benchmark --max-line-length=90 --builtins=execfile,raw_input,basestring --ignore=W191,E117,W503'
-	let g:ale_python_pylint_options = '--disable=W0312,design,C0330'
-	let g:ale_linters = {
-		\ 'python': ['flake8'],
-	\}
-endfunction
-autocmd! BufReadPost,BufNewFile *.rei,*.re call SetupReason()
-
 au BufNewFile,BufRead *.html,*.htm,*.shtml,*.stm,*.jinja set ft=jinja
 
-" Old code; can be removed.
-"au User lsp_setup call lsp#register_server({
-"	\ 'name': 'reason-language-server',
-"	\ 'cmd': ['/home/callum/work/reason-language-server/reason-language-server.exe'],
-"	\ 'whitelist': ['reason', 'merlin'],
-"	\ 'blacklist': [],
-"	\ 'config': {},
-"	\ 'worpskace_config': {},
-"\})
-" au BufRead,BufNewFile *.py set textwidth=79
+
+" special code for mrimpossible using tabs in python files
+function! SetupPyEnvironment()
+	let l:path = expand('%:p')
+	if l:path =~ '/home/callum/work/mrimpossible'
+		let g:dbext_default_profile = 'PG'
+		set textwidth=89 ts=4 sw=4 sts=4 fileformat=unix autoindent noet
+		setlocal textwidth=89 ts=4 sw=4 sts=4 fileformat=unix autoindent noet
+		let g:syntastic_python_flake8_args = '--benchmark --max-line-length=90 --builtins=execfile,raw_input,basestring'
+		let g:ycm_python_binry_path = '/usr/bin/python3'
+		let g:syntastic_python_python_exec = '/usr/bin/python3'
+		let g:ycm_path_to_python_interpreter = 'python3'
+		" let g:syntastic_mode_map = { 'mode': 'passive' }
+	endif
+endfunction
+autocmd! BufReadPost,BufNewFile *.py call SetupPyEnvironment()
+
+
+function! SetupJsEnvironment()
+	let l:path = expand('%:p')
+	if l:path =~ '/home/callum/work/mrimpossible'
+		setlocal ts=2 sw=2 sts=2 fileformat=unix autoindent et
+		set ts=2 sw=2 sts=2 fileformat=unix autoindent et
+	endif
+endfunction
+autocmd! BufReadPost,BufNewFile *.js,*.jsx,*.html call SetupJsEnvironment()
+
+function! SetupSQLEnvironment()
+	let l:path = expand('%:p')
+	if l:path =~ '/home/callum/work/mrimpossible'
+		let g:dbext_default_profile = 'PG'
+		let g:syntastic_sql_checkers = ['sqlfluff', 'pgsanity']
+		setlocal ts=4 sw=4 sts=2 fileformat=unix autoindent noet
+		set ts=4 sw=4 sts=4 fileformat=unix autoindent noet
+	endif
+endfunction
+autocmd! BufReadPost,BufNewFile *.sql call SetupSQLEnvironment()
+
+" Type Script Files.
+let g:ycm_always_populate_location_list = 1
+au BufRead,BufNewFile *.ts,*.tsx set ts=4 sw=4 sts=4 noet ft=typescript textwidth=79
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx textwidth=79
+
+" TOML
+au BufRead,BufNewFile *.toml set ts=4 sw=4 sts=4 et list ft=toml
+" let g:ycm_filetype_specific_completion_to_disable = {"typescript": 1}
+
+au BufRead,BufNewFile *.ftl set ts=4 sw=4 sts=4 fileformat=unix autoindent et ft=fluent
