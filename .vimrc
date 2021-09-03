@@ -93,6 +93,8 @@ call vundle#begin()
  Plugin 'vmchale/tomlcheck-vim'
  " Fluent Highlighting
  Plugin 'projectfluent/fluent.vim'
+ " Rust
+ Plugin 'rust-lang/rust.vim'
 call vundle#end()
 filetype plugin indent on
 
@@ -132,6 +134,7 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+let g:syntastic_python_python_exec = '/usr/bin/env python3'
 " let g:syntastic_debug = 3
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_aggregate_errors = 1
@@ -151,7 +154,8 @@ let g:syntastic_python_checkers = ['flake8', 'python']
 let g:syntastic_python_flake8_args = '--benchmark --max-line-length=90 --ignore=W191,W503'
 " ShellCheck should follow `source` calls in the script.
 let g:syntastic_sh_shellcheck_args = '-x'
-let g:syntastic_python_mypy_args = '--ignore-missing-imports --no-strict-optional --cache-dir /home/callum/work/.mypy_mrimpossible/'
+" let g:syntastic_python_mypy_args = '--ignore-missing-imports --no-strict-optional --cache-dir /home/callum/work/.mypy_mrimpossible/'
+let g:syntastic_python_mypy_args = '--cache-dir /home/callum/work/.mypy_mrimpossible/'
 " Custom Checker for PLPGSQL
 let g:syntastic_sql_checkers = ['sqlfluff', 'pgsanity']
 
